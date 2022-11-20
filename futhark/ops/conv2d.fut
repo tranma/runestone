@@ -4,7 +4,8 @@
 --   even if we do know it statically.
 --
 --   If we leave the return type dynamic like this then we will get a
---   unification error when we try to use it.
+--   unification error when we try to use it with second-order combinators
+--   (see below).
 --
 def slice4
       [nAi][nAc][nAh][nAw]
@@ -73,9 +74,10 @@ def conv2d
       (arrK: [nBc][nAc][nKh][nKw]f32)
     : ([nAi][nBc][nBh][nBw]f32) =
   let shK1 = (1, nAc, nKh, nKw)
-  -- The following doesn't work. Not cool with slices of unknown static sizes.
-  -- But we can't use slice syntax [:] to produce slices of static size.
-  -- What to do?
+  -- The following doesn't work. We are not cool with slices of unknown static
+  -- sizes because we want regular nested parallelism. In convolution's case
+  -- we do know the shape of the slice so there is probably a way to make this
+  -- work. What about operators with spatially varying kernels?
   let psA  = map (\i -> slice4 arrA i shK1) (indices_n1hw nAi nAh nAw)
   let psK  = map (\i -> slice4 arrK i shK1) (indices_n111 [nBc])
   in map (\pA -> map (\pK -> dot pA pK) psK) psA

@@ -6,7 +6,7 @@ some unusal algorithms such as disparity cost volume.
 The style is combinators based (input-oriented). The compiler has intrinsics for
 map, reduce, gather, scatter, etc.
 
-There is a deep learning library for Futhark here but it doesn't use Futhark's
+There is a deep learning library for Futhark but it doesn't use Futhark's
 experimental AD support. It does convolutions with im2col/gemm.
 
 Resources:
